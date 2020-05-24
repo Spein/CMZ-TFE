@@ -1,0 +1,113 @@
+<head>
+    <!-- Add meta tags for mobile and IE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
+    <script src="./assets/js/jquery.js"></script>
+    <script src="./assets/js/moment.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Antic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Catamaran&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.paypal.com/sdk/js?client-id=AeJW2wnaN3sEDAIMbBtFez8SrWDaLQymNRZpkUZhFuporxzQ-q0miw7u_6vg4JQIZHRTZG1lK4WebsZg&currency=EUR"></script>
+
+
+</head>
+
+<body>
+    <script>
+        var config = {
+            apiKey: "AIzaSyAdxBw7BVvGgtp0PliC5y_xXPfv35nDEuw",
+            authDomain: "pressformore-c0045.firebaseapp.com",
+            databaseURL: "https://pressformore-c0045.firebaseio.com",
+            projectId: "pressformore-c0045",
+            storageBucket: "pressformore-c0045.appspot.com",
+            messagingSenderId: "1059781682708"
+        };
+
+        firebase.initializeApp(config);
+        console.log(CacheStorage)
+    </script>
+
+    <!-- Set up a container element for the button -->
+    <div id="blackhole" style="position: absolute;z-index: -1;">
+    </div>
+    <div id="container-wallet" style="margin: 18% 0 5% 0;flex-direction: column;">
+        <div id="counter"></div>
+        <div id="commmonerz">CoMonZ</div>
+    </div>
+
+
+    <div id="paypal-button-container"></div>
+    <div id="amountcontainer" style='visibility:hidden'></div>
+    <div id="usercontainer" style='visibility:hidden'></div>
+    <div id="attcountcontainer" style='visibility:hidden'>fdf</div>
+
+    <div id="transaction-status"></div>
+    <!-- Include the PayPal JavaScript SDK -->
+
+
+    <script>
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: parseInt(document.getElementById("counter").innerHTML) / 10
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                    $("#paypal-button-container").hide()
+                    $('#transaction-status').html("");
+                    // Show a success message to the buyer
+
+                    var startDate = new Date();
+                    var endDate = moment(new Date()).add(1, 'month');
+                    var user = document.getElementById("usercontainer").innerHTML
+                    var amount = document.getElementById("counter").innerHTML
+                    var attcount = parseInt(document.getElementById("attcountcontainer").innerHTML)
+
+                    var parsedStartDate = JSON.stringify(startDate);
+                    var parsedEndDate = JSON.stringify(endDate);
+
+
+
+                    firebase.database().ref('users/' + user + '/wallet/').set({
+                        amount: amount,
+                        startDate: parsedStartDate,
+                        endDate: parsedEndDate,
+                        status: "active",
+                        Attcounter: attcount
+
+
+                    });
+                    $('#paypal-button-container').hide();
+                    $("#blackhole").hide();
+                    $("#container-wallet").hide();
+
+
+                    $('#transaction-status').html("<p>Votre transaction a bien été enregistrée " + details.payer.name.given_name + "!<br>Vous pouvez réouvrir l'extension</p>");
+
+
+                    chrome.storage.local.clear()
+
+                    console.log(" wallet storage successful")
+
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+    </script>
+    <script src="./assets/js/blackhole.js"></script>
+
+</body>

@@ -1,0 +1,48 @@
+{
+    "manifest_version": 2,
+    "name": "CoMonZ, a winning altogether",
+    "description": "A real torough way to win money in communs.",
+    "version": "2.3",
+    "icons": {
+        "128": "./logo/logo-base.png"
+    },
+    "browser_action": {
+        "default_icon": {
+            "48": "./logo/logo-base.png"
+        },
+        "default_popup": "credentials.html"
+    },
+    "background": {
+        "page": "background.html"
+    },
+    "permissions": [
+        "identity",
+        "tabs",
+        "storage",
+        "http://*/*",
+        "https://*/*",
+        "webNavigation",
+        "http://localhost/*"
+
+
+    ],
+    "content_scripts": [{
+        "matches": ["http://*/*", "https://*/*"],
+        "js": ["content.js", "js/jquery.js", "js/rangeslider.min.js", "js/underscore-min.js", "js/signin.js", "js/profile.js", "js/onContent.js", "js/moment.js"],
+        "run_at": "document_start"
+    }],
+
+    "content_security_policy": "script-src 'self' 'unsafe-eval' https://kit.fontawesome.com/ https://www.youtube.com/* https://www.sandbox.paypal.com/ https://apis.google.com/ https://www.gstatic.com/ https://*.firebaseio.com https://*.paypal.com/ https://www.googleapis.com/* ; object-src 'self'",
+    "oauth2": {
+        "client_id": "1059781682708-dkrha4ebhj2tp1k99qtmm4g45i52us22.apps.googleusercontent.com",
+        "scopes": [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/userinfo.profile",
+            "https://www.googleapis.com/auth/youtube.readonly"
+        ]
+    },
+    "externally_connectable": {
+        "matches": ["http://localhost:8080/*"]
+    },
+    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg87Wg0IIE7BAl7dyzk12kQIR20DxQ27JbbkelCS9PKWNyKF7yJ+d9XjA2EUHzNY4qWD5BXNsAsEvbPflt0tojhV8f05nI/aacKKXzz5DkmjiAfB/T+TN11sOvRVJSULTHpgu7moN7bJUPpgmO/oGoCj9aM0jyPBPb9y5FbprdkyQaJG5ws9nEBTIrDi40Gsiau7s9tfeiY05NiGhEv/iSRTurLqIcNmsJtQ2orfXAQECls5tC64Mg8KE7C+PIPx/l+wVbQlexhMWivxQXGCDq0oxwqKzed+/C5ZocBehqWxs3X7sjWj8wmbpJKk84qBIpFGm7kjvcdJWTQI4NnoDVwIDAQAB"
+}

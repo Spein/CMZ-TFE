@@ -1,0 +1,18 @@
+{
+  "name": "chromextension",
+  "version": "1.0.0",
+  "description": "Firebase Auth w/ Google Sign-In in Chrome Extensions ====================================================",
+  "main": "background.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "braintree-web": "^3.53.0",
+    "firebase": "^5.11.1",
+    "ibantools": "^2.2.0",
+    "require": "^2.4.20",
+    "spectre.css": "^0.5.8"
+  }
+}

@@ -1,0 +1,80 @@
+<script type="module" src="js/signin.js"></script>
+
+
+<div class="docs-demo columns" id="container">
+    <div id="blackhole" class="signin">
+    </div>
+    <div class="column col-12 col-xs-12">
+        <p id="warning" style="color: red"></p>
+    </div>
+    <!--     Sign-up part  -->
+    <div class="column col-12 col-xs-12" style="display: none" id="emailsignUp">
+        <div id="profile-header" style="margin-top: 13%;">
+            <figure class="avatar avatar-lg"><label for="file" class="label-file"><i class="fas fa-upload"></i></label>
+                <input id="file" class="input-file" type="file"><img id='img-wrap' style="background: none;" src="" alt="">
+            </figure>
+        </div>
+
+        <!-- pattern validation example for Email -->
+        <span class="input input--hoshi username-field">
+                    <i class="icon icon-people"></i>
+
+                <input class="input__field input__field--hoshi"  id="displayName" placeholder=" blase" type="text"/>
+                <label class="input__label input__label--hoshi input__label--hoshi-color-2" >
+            </label>
+            </span>
+        <!-- pattern validation example for Email -->
+        <span class="input input--hoshi email-field">
+                    <i class="icon icon-mail"></i>
+
+                <input class="input__field input__field--hoshi" id="email"placeholder=" email"  type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,14}$" />
+                <label class="input__label input__label--hoshi input__label--hoshi-color-2 ">  
+            </label>
+            </span>
+        <span class="input input--hoshi description-field">
+                    <i class="icon icon-message"></i>
+
+                <input class="input__field input__field--hoshi"  placeholder=" description" id="description" type="text"/>
+                <label class="input__label input__label--hoshi input__label--hoshi-color-2"  >
+                       </label>
+            </span>
+
+        <!-- pattern validation example for password (8 or more characters that are of at least one number, and one uppercase and lowercase letter) -->
+        <span class="input input--hoshi password-field">
+                    <i class="icon icon-link"></i>
+
+                <input class="input__field input__field--hoshi"  id="password" placeholder="Mot de passe" type="password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$"  />
+                <label class="input__label input__label--hoshi input__label--hoshi-color-2 password-field" >
+            </label>
+            </span>
+        <button class="btn btn-primary btn-block" id="signUp">Signup</button>
+        <p class="link" id="existing-member"><u>Déjà membre?</u></p>
+
+    </div>
+</div>
+<!--     Sign-in part  -->
+<div class="column col-12 col-xs-12" id="emailsignIn">
+    <div style="display:flex;justify-content:center;margin-top:19%"><img style="max-width: 25vw;margin:4%" src="./logo/logo-base.png" alt=""></div>
+    <h2>Salut, CoMonrZ!</h2>
+
+    <span class="input input--hoshi email-field">
+                <i class="icon icon-mail"></i>
+
+        <input class="input__field input__field--hoshi" id="emails" placeholder="email" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,14}$" />
+        <label class="input__label input__label--hoshi input__label--hoshi-color-1">
+        </label>
+        </span>
+    <span class="input input--hoshi password-field">
+                <i class="icon icon-link"></i>
+
+					<input class="input__field input__field--hoshi" id="passwords" placeholder=" Mot de passe" type="password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$"  />
+					<label class="input__label input__label--hoshi input__label--hoshi-color-2" >
+        </label>
+        </span>
+
+
+    <button class="btn btn-primary btn-block" id="signIn">Sign-in</button>
+    <p class="link" id="new-member"><u>Nouveau membre?</u></p>
+
+</div>
+</div>
