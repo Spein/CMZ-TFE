@@ -9,17 +9,12 @@
 }
 
 .input__field {
-    position: relative;
-    display: block;
     float: right;
-    padding: 0.8em;
-    width: 60%;
     border: none;
     border-radius: 0;
     background: #f0f0f0;
     color: #aaa;
     font-weight: bold;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     -webkit-appearance: none;
     /* for box shadows to show on iOS */
 }
@@ -77,9 +72,7 @@
 }
 
 .input__field--hoshi {
-    margin-top: 1em;
     padding: 0.85em 0.15em;
-    width: 100%;
     background: transparent;
     color: #595F6E;
 }
@@ -107,7 +100,6 @@
     left: 0;
     width: 100%;
     height: calc(100% - 10px);
-    border-bottom: 1px solid #B9C1CA;
 }
 
 .input__label--hoshi::after {

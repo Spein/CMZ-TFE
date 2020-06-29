@@ -172,7 +172,7 @@ function initApp() {
                                         if (j == 0) {
                                             j = 60
                                         }
-                                        var path = './logo/logo-' + j + '.png';
+                                        var path = './logo/image (' + j + ').png';
                                         j--
                                         chrome.browserAction.setIcon({ path: path });
                                         var badgeText = progress.toString()

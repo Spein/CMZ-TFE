@@ -2,13 +2,7 @@ import * as blackhole from '/js/blackhole.js';
 import * as userInfo from '/js/userInfo.js';
 import * as credentials from '/js/credentials.js';
 
-blackhole.blackhole('#blackhole', 1, 200, 200, 195)
-
-function test() {
-
-}
-
-//document.getElementById("test").addEventListener('click', test, false);
+blackhole.blackhole('#blackhole', 1, 175, 200, 140)
 
 
 function signUp(email, displayName, password, photoURL) {

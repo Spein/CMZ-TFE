@@ -1,11 +1,11 @@
 body {
     width: 315px;
     margin: 0;
-    font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
 }
 
 .panel .panel-body {
-    padding: 0
+    padding: 0;
+
 }
 
 h1,
@@ -81,6 +81,7 @@ span.input.input--hoshi {
     justify-content: center;
     align-items: center;
     margin: 0;
+    padding: 0 0 0 3%;
 }
 
 i:hover {
@@ -93,10 +94,10 @@ input::placeholder {
 }
 
 .input__field--hoshi {
-    padding: 0.85em 0.15em;
     width: 100%;
     background: transparent;
     color: #595F6E;
+    text-align: center;
 }
 
 .column.col-1,
@@ -474,7 +475,7 @@ button#check-iban {
 
 #img-wrap:after {
     content: "";
-    background: url(/logo/logo-base.png) no-repeat;
+    background: url(/logo/logo-off-base.png) no-repeat;
     background-position-x: 51%;
     background-position-y: 58%;
     background-size: 81%;

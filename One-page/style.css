@@ -36,7 +36,6 @@ html {
 }
 
 body {
-    font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
     font-size: 15px;
     letter-spacing: 0.5px;
     line-height: 1.5;
@@ -74,10 +73,11 @@ h2,
 h3,
 h4,
 h5,
-h6 {
-    font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
-    font-weight: 700;
-    margin-top: 0;
+h6,
+p,
+span {
+    font-family: 'Quicksand', sans-serif;
+    text-align: center
 }
 
 h1 {
@@ -173,14 +173,21 @@ button:focus {
 }
 
 #spirit-img {
-    background-image: url(https://media2.giphy.com/media/l0HlyLQsbvhciAuKA/giphy.gif);
-    height: 61vh;
     background-repeat: no-repeat;
-    background-size: cover;
-    margin: 4% 0;
+    background-size: contain;
+    background-position-y: 74px;
+    background-position-x: center;
+    height: 3vh;
 }
 
-#spirit-img::after {
+.legend {
+    text-align: center;
+    color: white;
+    font-style: italic;
+}
+
+
+/* #spirit-img::after {
     content: "";
     background: #ffffff67;
     opacity: 0.5;
@@ -191,6 +198,7 @@ button:focus {
     position: absolute;
     z-index: -1;
 }
+ */
 
 
 /* ========= BUTTON =========*/
@@ -259,12 +267,12 @@ button:focus {
 /*--------------------*/
 
 #logo-container {
-    background: #ffffffcc;
+    background: #ffffff4a;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    min-height: 557px;
+    min-height: 658px;
     min-width: 599px;
     margin-left: -5%;
 }
@@ -703,15 +711,20 @@ button:focus {
     float: left;
     margin-top: 30px;
     width: 100%;
+    padding: 0 18px;
+    text-align: justify;
 }
 
 .mu-feature-content-right .media-left {
     padding-right: 15px;
-}
+    padding-top: 7%;}
 
 .mu-feature-btn {
-    color: #fff;
+    color: #ff5a60;
     font-size: 18px;
+    background: none;
+    border: 1px solid;
+    border-radius: 50%;
 }
 
 .mu-feature-btn:hover {
@@ -728,12 +741,13 @@ button:focus {
 
 .mu-feature-content-right .media {
     margin-top: 15px;
-    border-bottom: 1px solid #ddd;
     margin-bottom: 20px;
-    padding-bottom: 20px;
+    padding: 20px;
     -webkit-transition: all 0.5s;
     -o-transition: all 0.5s;
     transition: all 0.5s;
+    height:15vh;
+    background: #ffffffbf;
 }
 
 .mu-feature-content-right .media p {
@@ -1242,7 +1256,14 @@ button:focus {
     transition: all 0.5s;
 }
 
-
+.rotating{
+    -webkit-animation:spin 15s linear infinite;
+    -moz-animation:spin 15s linear infinite;
+    animation:spin 15s linear infinite;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 /*--------------------*/
 
 

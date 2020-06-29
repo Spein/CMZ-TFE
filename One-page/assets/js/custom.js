@@ -44,7 +44,7 @@ import * as blackhole from './blackhole.js';
 				 stroke-dasharray="${this._circumference} ${this._circumference}"
 				 style="stroke-dashoffset:${this._circumference}"
 				 stroke-width="${stroke}"
-				 fill="#ffffff75"
+				 fill="transparent"
 				 r="${normalizedRadius}"
 				 cx="${radius}"
 				 cy="${radius}"
@@ -63,7 +63,7 @@ import * as blackhole from './blackhole.js';
         }
 
         setProgress(percent) {
-            const offset = this._circumference - (percent / 60 * this._circumference);
+            const offset = this._circumference - (percent * this._circumference);
             const circle = this._root.querySelector('circle');
             circle.style.strokeDashoffset = offset;
         }
@@ -86,10 +86,15 @@ import * as blackhole from './blackhole.js';
     const el = document.querySelector('progress-ring');
 
     const interval = setInterval(() => {
-        progress += 1 / 10;
+        console.log(progress)
+
+        progress += (1 / 30);
         el.setAttribute('progress', progress);
-        if (progress === 60)
+        if (progress === 60) {
             clearInterval(interval);
+            progress = 0
+        }
+
     }, 100);
 
     blackhole.blackhole('#blackhole', 1, 283, 283, 255)
@@ -221,26 +226,26 @@ import * as blackhole from './blackhole.js';
     /*  4. APPS SCREENSHOT SLIDEER ( SLICK SLIDER )
     /* ----------------------------------------------------------- */
 
-    /*     $('.mu-apps-screenshot-slider').slick({
-            slidesToShow: 4,
-            responsive: [{
-                    breakpoint: 768,
-                    settings: {
-                        arrows: true,
-                        slidesToShow: 3
-                    }
-                },
-                {
-                    breakpoint: 480,
-                    settings: {
-                        arrows: true,
-                        slidesToShow: 1
-                    }
+    $('.mu-apps-screenshot-slider').slick({
+        slidesToShow: 4,
+        responsive: [{
+                breakpoint: 768,
+                settings: {
+                    arrows: true,
+                    slidesToShow: 3
                 }
-            ]
-        });
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    arrows: true,
+                    slidesToShow: 1
+                }
+            }
+        ]
+    });
 
-     */
+
 
     /* ----------------------------------------------------------- */
     /*  5. BOOTSTRAP ACCORDION 
