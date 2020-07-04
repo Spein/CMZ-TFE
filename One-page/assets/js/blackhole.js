@@ -163,7 +163,7 @@ export function blackhole(element, count, gh, gw, maxOrbit) {
         var now = new Date().getTime();
         currentTime = (now - startTime) / 50;
 
-        context.fillStyle = 'rgba(255, 90, 96,0.2)'; // somewhat clear the context, this way there will be trails behind the stars 
+        context.fillStyle = 'rgba(251, 51, 51,0.93)'; // somewhat clear the context, this way there will be trails behind the stars 
         context.fillRect(0, 0, cw, ch);
 
         for (var i = 0; i < stars.length; i++) { // For each star
@@ -191,16 +191,20 @@ export function blackhole(element, count, gh, gw, maxOrbit) {
     }
 
 
-    function updateStar() {
 
-        setInterval(function() { new star() }, 2000);
+    function updateStar(i) {
+        if (i <40) {
+            new star()
+        }
 
+        setTimeout(function() {
+            updateStar(i + 1);
 
-        // create 2500 stars
+        }, 2000);
     }
 
     function init(time) {
-        context.fillStyle = 'rgba(255, 90, 96,0.2)'; // Initial clear of the canvas, to avoid an issue where it all gets too dark
+        context.fillStyle = 'rgba(251, 51, 51,0.93)'; // Initial clear of the canvas, to avoid an issue where it all gets too dark
         context.fillRect(0, 0, cw, ch);
         for (var i = 0; i < 0; i++) { // create 2500 stars
             new star();
@@ -211,7 +215,7 @@ export function blackhole(element, count, gh, gw, maxOrbit) {
 
         loop();
     }
-    updateStar()
+    setTimeout(updateStar(0), 1000);
     init();
 }
 export function getRndInteger(min, max) {
