@@ -1,6 +1,6 @@
 import * as blackhole from '/js/blackhole.js';
 import * as lists from '/js/lists.js';
-moment().local("fr")
+moment()
 export function checkWallet() {
     $("#blackhole").html("")
     $("#profile-header").hide()
@@ -35,7 +35,7 @@ export function checkWallet() {
             }
             if (wallet.status == "inactive") {
                 $("#btns-wallet").show()
-                $("#statut-commons").html("<p>Votre période est dépassée. <p> Ajoutez ici vos coMonZ et déterminez votre temps d'attention </p><p>Votre temps d'attention est de :<br><span id='attCounter'>1 minute et 0 secondes</span></p>")
+                $("#statut-commons").html("<p>Your active period is over.<br> Add your coMonZ here and determine your attention time </p> <p> Your attention time is: <br> <span id = 'attCounter'> 1 minute and 0 seconds</span></p>")
                 $("#date-container").hide()
 
 
@@ -55,8 +55,8 @@ export function checkWallet() {
                     var seconds = attCounter - (60 * minutes)
                 }
                 console.log(attCounter)
-                $("#statut-commons").html("<p>Votre portefeuille a été rempli " + moDate + "</p><p>Votre temps d'attention est de :<br><span id='attCounter'></span></p>")
-                $("#attCounter").html(minutes + " minutes " + seconds + " secondes")
+                $("#statut-commons").html("<p>Your wallet is full of coMonZ for " + moDate + "</p><p>You've set your commitment at :<br><span id='attCounter'></span></p>")
+                $("#attCounter").html(minutes + " minutes " + seconds + " seconds")
 
                 $("#statut-commons").show()
                 $("#date-container").show()
@@ -107,7 +107,7 @@ export function createWallet() {
     $("#create-wallet").hide()
     $("#wallet-amount").show()
     $("#btns-wallet").show()
-    $("#statut-commons").html("<p> Ajoutez ici vos coMonZ et déterminez votre temps d'attention </p><p>Votre temps d'attention est de :<br><span id='attCounter'>1 minute et 0 secondes</span></p>")
+    $("#statut-commons").html("<p>Add your coMonZ here and determine your attention time </p> <p> Your attention time is: <br> <span id = 'attCounter'> 1 minute and 0 seconds</span></p>")
     $("#wallet-on").show()
     $("#commonZ").show()
 
@@ -303,9 +303,9 @@ export function checkWStatus() {
 const $element = $('input[type="range"]');
 const $tooltip = $('#range-tooltip');
 const sliderStates = [
-    { name: "low", tooltip: "Super, vous dégainez plus vite que votre ombre! On adore les francs-tireurs.", range: _.range(5, 300) },
-    { name: "med", tooltip: "Pas mal, vous avez raison pourquoi se presser à rétribuer un potentiel franc-maçonniste !", range: _.range(300, 500) },
-    { name: "high", tooltip: "Mouais...j'en connais un qui passe les vacances chez maman à Tel-Aviv...Allez Mr. Scrupuleux ainsi soit-il :)", range: [600] },
+    { name: "low", tooltip: "Great, a Super Faaan! We love snipers.", range: _.range(5, 300) },
+    { name: "med", tooltip: "Well, you deserve time to know what's worthy and what's not", range: _.range(300, 500) },
+    { name: "high", tooltip: "“Tolerance is the daughter of doubt.”", range: [600] },
 ];
 var currentState;
 var $handle;

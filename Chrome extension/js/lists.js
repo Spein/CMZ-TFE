@@ -4,7 +4,7 @@ var tz = moment.tz.guess(true)
 export function getUserpaidContents() {
     var div = document.getElementById("transactions-sent")
     div.innerHTML = "";
-    div.innerHTML += '<div class="transaction"><div class="first-trcontainer"><p class="column-title" style="align-self:center;"><i class="fab fa-autoprefixer"></i>Titre</p></div><div class="second-trcontainer"><p class="column-title"><i class="fas fa-feather-alt"></i> Auteur</p></div></div>'
+    div.innerHTML += '<div class="transaction"><div class="first-trcontainer"><p class="column-title" style="align-self:center;"><i class="fab fa-autoprefixer"></i>Title</p></div><div class="second-trcontainer"><p class="column-title"><i class="fas fa-feather-alt"></i> Creator</p></div></div>'
     var userId = firebase.auth().currentUser.uid;
     return firebase.database().ref('/users/' + userId + "/transactions/").once('value').then(function (snapshot) {
         var urls = (Object.keys(snapshot.val()));
@@ -71,7 +71,7 @@ export function getReceivedPaymentsHist() {
         firebase.database().ref('/transactions/' + authorKey).once('value').then(function (snap) {
             var arrContent = Object.entries(snap.val())
 
-            div.innerHTML += '<div class="transaction"><div class="first-trcontainer"><p class="column-title" style="align-self:center;"><i class="fab fa-autoprefixer"></i>Titre</p></div><div class="second-trcontainer"><p class="column-title"><i class="fab fa-slack-hash"></i> Number</p></div></div>'
+            div.innerHTML += '<div class="transaction"><div class="first-trcontainer"><p class="column-title" style="align-self:center;"><i class="fab fa-autoprefixer"></i>Title</p></div><div class="second-trcontainer"><p class="column-title"><i class="fab fa-slack-hash"></i> Number</p></div></div>'
 
             arrContent.forEach((value, index) => {
                 console.log(value)
@@ -163,12 +163,12 @@ export function getReceivedPaymentsbyContents() {
 
     })
 }
-// Paiements donnés par auteurs
+// Paiements donnés par Creators
 
 export function getSendPaymentsbyAuthors() {
     var div = document.getElementById("transactions-sent")
     div.innerHTML = "";
-    div.innerHTML += '<div class="transaction"><div class="first-trcontainer"><p class="column-title" style="align-self:center;"><i class="fas fa-feather-alt"></i> Auteur</p></div><div class="second-trcontainer"><p class="column-title"><i class="fab fa-slack-hash"></i>Contents</p></div></div>'
+    div.innerHTML += '<div class="transaction"><div class="first-trcontainer"><p class="column-title" style="align-self:center;"><i class="fas fa-feather-alt"></i> Creator</p></div><div class="second-trcontainer"><p class="column-title"><i class="fab fa-slack-hash"></i>Contents</p></div></div>'
 
     var clientIds = []
     var userId = firebase.auth().currentUser.uid;

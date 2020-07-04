@@ -146,7 +146,7 @@ export function alertValidIBAN(iban) {
 
 
     } else {
-        $("#warning-iban").html("<p class='label label-error mr-1'>Mauvais numéro IBAN</p>")
+        $("#warning-iban").html("<p class='label label-error mr-1'>Wrong IBAN number </p>")
 
     };
 
@@ -167,7 +167,7 @@ export function alertValidIBAN2(iban) {
 
 
     } else {
-        $("#warning-iban2").html("<p class='label label-error mr-1'>Mauvais numéro IBAN</p>")
+        $("#warning-iban2").html("<p class='label label-error mr-1'>Wrong IBAN number </p>")
 
     };
 

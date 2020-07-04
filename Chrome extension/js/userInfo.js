@@ -55,7 +55,7 @@ export function checkSupport() {
         console.log(url)
         firebase.database().ref('/wishes/' + url).once('value').then(function (snapshot) {
             if (snapshot.val() && snapshot.val()[user]) {
-                $("#wishes").html("<i style='color:#d95555' class='fas fa-seedling'></i><p>Vous avez déjà marqué votre intérêt pour ce contenu et nous avons sûrement déjà pris contact avec l'auteur</p>")
+                $("#wishes").html("<i style='color:#d95555' class='fas fa-seedling'></i><p>You have already indicated your interest in this content and we have probably already contacted its Creator</p>")
 
             }
         })

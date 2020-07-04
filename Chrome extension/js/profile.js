@@ -183,7 +183,7 @@ function getURL() {
         firebase.database().ref('wishes/' + url).update({
             [user]: parsedDate
         }).then((updates) => {
-            $("#wishes").html("<i style='color:#d95555' class='fas fa-seedling'></i><p>Merci! Quel plaisir d'agrandir la famille, nous allons prendre contact avec l'auteur</p>")
+            $("#wishes").html("<i style='color:#d95555' class='fas fa-seedling'></i><p>Thank you! What a pleasure to expand the family, we will contact our next Creator</p>")
         })
     });
 }

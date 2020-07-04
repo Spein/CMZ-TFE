@@ -67,7 +67,7 @@ function getContent() {
                                         setInterval(function () {
 
                                             chrome.storage.local.get('progress', function (result) {
-                                                $("#statut-transaction").html("<p>Contenu rémunéré dans :<br>" + result.progress + " secondes</p>")
+                                                $("#statut-transaction").html("<p>CoMonZ dropped in :<br>" + result.progress + " seconds</p>")
 
                                             })
                                         }, 1000)
@@ -140,7 +140,7 @@ function getContent() {
                                 if (snapshot.val()) {
                                     var commoners = Object.keys(snapshot.val()).length;
                                     blackhole.blackhole('#blackhole', commoners, 220, 220, 125);
-                                    $("#commoners").text("Ce contenu à déjà conquis " + commoners + " comMoners")
+                                    $("#commoners").text("This work has already charmed " + commoners + " CoMonerZ")
 
                                 } else if (snapshot.val() == undefined) {
                                     $("#statut-transaction").text("pas encore de support")
