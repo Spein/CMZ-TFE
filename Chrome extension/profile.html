@@ -23,8 +23,7 @@
         <div class="panel">
             <div id="blackhole">
             </div>
-            <i class="fas fa-file-import" style="display:none;margin: 18% 0px 0px 7%;position: absolute;"
-                id="content-back"></i>
+            <i class="fas fa-file-import" style="display:none;margin: 18% 0px 0px 7%;position: absolute;" id="content-back"></i>
 
             <!--***/// Panels Nav ///*** -->
             <nav id="tabs" class="panel-nav">
@@ -61,6 +60,7 @@
                         <h5 id="wallet-amount">0</h5>
 
                         <p>CoMonZ</p>
+                        <p style="font-size: 10px" id="euro-amount"></p>
                     </figure>
                 </div>
                 <div class="header" id="transaction-header" style="display:none">
@@ -85,11 +85,10 @@
                     <p style="font-size:12px; ">All fields are editable</p>
                     <button id="saveButton" class="btn btn-primary btn-block" style="display: none">Update</button>
                     <div class="transactions-footer" id="wishes">
-                        <div
-                            style="padding: 6% 0;font-size: 10px;padding: 6% 0;font-size: 10px;flex-direction: column;display: flex;justify-content: center;align-items: center;">
+                        <div style="padding: 6% 0;font-size: 10px;padding: 6% 0;font-size: 10px;flex-direction: column;display: flex;justify-content: center;align-items: center;">
                             <i style="color:#636363" class="fas fa-seedling"></i>
-                            <p>This is not a recognized Creator's work and you are therefore redirected to your
-                                profile.<br>
+                            <p>This is not a recognized Creator's work and you are therefore redirected to your profile.
+                                <br>
                                 <span style="cursor:pointer;color:#d95555" id="getUrl">Click here to let us know your
                                     interest for the author</span></p>
                         </div>
@@ -104,7 +103,7 @@
                         <p style="font-size:12px;padding: 3%;">No Wallet yet. Click on the icon to create one</p>
                     </div>
                     <div id="wallet-on" style="display:none" class=" col-12 col-xs-12">
-                        <div style="font-size:12px; margin-bottom:5%" id="statut-commons"></div>
+                        <label for="panel_size" style="margin-bottom: 5vh;">Fix the amount of CoMonZ you want to fix for this month</label>
 
                         <div id="btns-wallet" class="button-container">
 
@@ -115,12 +114,14 @@
                                 <button class="btn btn-wallet btn-primary btn-block" id="minus-commons">- 10
                                     coMonZ</button>
                             </div>
-                            <div
-                                style="display: flex;justify-content: center;flex-direction: column;align-items: center;max-width: 80vw;margin-bottom: 2vh;">
+
+                            <div style="display: flex;justify-content: center;flex-direction: column;align-items: center;max-width: 80vw;margin-bottom: 2vh;">
                                 <label for="panel_size" style="margin-bottom: 5vh;">Fix your attention time here, in seconds</label>
                                 <input type="range" name="participants" min="1" max="600" value="60">
                                 <span class="rangeslider__tooltip" id="range-tooltip"></span>
                             </div>
+                            <label style="font-size:12px; margin-bottom:5%" id="statut-commons"></label>
+
                             <button id="save-wallet" style="display: none;" class="btn btn-primary btn-block">Save your
                                 wallet </button>
 
@@ -128,8 +129,7 @@
                         <div id="paypal-button-container"></div>
 
                         <div id="date-container" style="display: none">
-                            <p style="margin-right:4%;font-size:12px">Active period: <span id="wallet-startDate"></span>
-                                &#8594; <span id="wallet-endDate"></span></p>
+                            <p style="margin-right:4%;font-size:12px">Active period: <span id="wallet-startDate"></span> &#8594; <span id="wallet-endDate"></span></p>
                         </div>
                     </div>
 
@@ -143,8 +143,7 @@
                     </div>
                     <div id="transactions-sent"></div>
                     <div style='display:none' class="transactions-footer" id="footer-sent">
-                        <div style="display:flex;justify-content: center;margin-top: 4%;"> <i class="fas fa-filter"
-                                aria-hidden="true"></i>
+                        <div style="display:flex;justify-content: center;margin-top: 4%;"> <i class="fas fa-filter" aria-hidden="true"></i>
                             <p>Filter by </p>
                         </div>
                         <div class="fbutt-cont">
@@ -173,17 +172,13 @@
                     </div>
                     <div id="no-author" style="display: none">
                         <h4>Become a Creator?</h4>
-                        <p id="no-cgu">With your active commitment, karma catches up with you ... <br> Let your fans
-                            cover you with gold, finally a full fridge, and enough to feed your entire family</p>
+                        <p id="no-cgu">With your active commitment, karma catches up with you ... <br> Let your fans cover you with gold, finally a full fridge, and enough to feed your entire family</p>
                         <div id="cgu-accepted" style="display:none">
-                            <p>You got it! <br>Now enter the <b> bank account number </b> / tax haven that we know where
-                                to drop the money </p>
+                            <p>You got it! <br>Now enter the <b> bank account number </b> / tax haven that we know where to drop the money </p>
                             <div id="warning-iban"></div>
-                            <div style="display: flex;"> <i style="margin: 0 4%;font-size: 37px; color:#616060"
-                                    class="far fa-credit-card" aria-hidden="true"></i>
+                            <div style="display: flex;"> <i style="margin: 0 4%;font-size: 37px; color:#616060" class="far fa-credit-card" aria-hidden="true"></i>
 
-                                <input id="iban-input" style="width: 77%;" class="form-input" type="text" placeholder=""
-                                    value=""></div>
+                                <input id="iban-input" style="width: 77%;" class="form-input" type="text" placeholder="" value=""></div>
                             <button class="btn btn-primary btn-block" id="check-iban">Check it</button>
 
                         </div>
@@ -203,18 +198,14 @@
                         <h6> <i style="color:#d95555" class="fas fa-feather-alt"></i> You've just became a Creator!</h6>
                         <p style="font-size:12px">Your Creator Key: <span id="commons-key"></span></p>
                         <p> Please insert this tag in your productions </p>
-                        <p> We will transfer your coMonZ earnt every month to the following account:<br><span
-                                id="bank-account"></span></p>
-                        <p style="color:#d95555;font-size: 10px;cursor: pointer;" id="change-bacc">Change your
-                            beneficiary account</p>
+                        <p> We will transfer your coMonZ earnt every month to the following account:<br><span id="bank-account"></span></p>
+                        <p style="color:#d95555;font-size: 10px;cursor: pointer;" id="change-bacc">Change your beneficiary account</p>
                         <div id="verify-change" style="display: none;">
                             <div id="warning-iban2"></div>
 
-                            <div style="display: flex;"> <i style="margin: 0 4%;font-size: 37px; color:#616060"
-                                    class="far fa-credit-card" aria-hidden="true"></i>
+                            <div style="display: flex;"> <i style="margin: 0 4%;font-size: 37px; color:#616060" class="far fa-credit-card" aria-hidden="true"></i>
 
-                                <input id="iban-input2" style="width: 77%;" class="form-input" type="text"
-                                    placeholder="" value=""></div>
+                                <input id="iban-input2" style="width: 77%;" class="form-input" type="text" placeholder="" value=""></div>
                             <button class="btn btn-primary btn-block" id="check-iban2">Let us check this out</button>
                         </div>
 
@@ -231,8 +222,7 @@
                         <div id="transactions-received"></div>
                     </div>
                     <div style='display:none' class="transactions-footer" id="footer-received">
-                        <div style="display:flex;justify-content: center;margin-top: 4%;"> <i class="fas fa-filter"
-                                aria-hidden="true"></i>
+                        <div style="display:flex;justify-content: center;margin-top: 4%;"> <i class="fas fa-filter" aria-hidden="true"></i>
                             <p>Filter by </p>
                         </div>
                         <div class="fbutt-cont">

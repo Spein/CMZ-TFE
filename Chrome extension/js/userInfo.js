@@ -9,7 +9,7 @@ export function load() {
             }
         }) */
     const currentUser = firebase.auth().currentUser.uid
-    firebase.database().ref('/users/' + currentUser).once('value').then(function (snapshot) {
+    firebase.database().ref('/users/' + currentUser).once('value').then(function(snapshot) {
 
         const connectedUser = {
             photoURL: snapshot.val().photoURL,
@@ -35,9 +35,6 @@ export function showFSteps() {
     $("#first-steps").show()
 }
 
-export function closeTuto() {
-    $("#tutorials").hide()
-}
 
 export function checkProfile() {
     $("#blackhole").html("")
@@ -49,11 +46,11 @@ export function checkProfile() {
 
 }
 export function checkSupport() {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
         var user = firebase.auth().currentUser.uid
         var url = tabs[0].url.replace(/[^\w\s]/gi, '_')
         console.log(url)
-        firebase.database().ref('/wishes/' + url).once('value').then(function (snapshot) {
+        firebase.database().ref('/wishes/' + url).once('value').then(function(snapshot) {
             if (snapshot.val() && snapshot.val()[user]) {
                 $("#wishes").html("<i style='color:#d95555' class='fas fa-seedling'></i><p>You have already indicated your interest in this content and we have probably already contacted its Creator</p>")
 
@@ -66,9 +63,9 @@ export function writeUserData() {
     var db = firebase.database()
     var email = $("#email").text();
     if (email != currentUser.email) {
-        currentUser.updateEmail(email).then(function () {
+        currentUser.updateEmail(email).then(function() {
             console.log('email changed')
-        }).catch(function (error) {
+        }).catch(function(error) {
             // An error happened.
         });
     }
@@ -82,14 +79,14 @@ export function writeUserData() {
         email: email,
         description: description
 
-    }).then(function () {
+    }).then(function() {
         chrome.storage.local.set({ 'displayName': displayName });
         chrome.storage.local.set({ 'email': email });
         chrome.storage.local.set({ 'photoURL': photoURL });
         chrome.storage.local.set({ 'description': description });
 
         console.log("Update successful")
-    }).catch(function (error) {
+    }).catch(function(error) {
         console.log(" An error happened")
     });
 

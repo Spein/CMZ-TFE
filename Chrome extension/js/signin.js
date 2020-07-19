@@ -1,6 +1,7 @@
 import * as blackhole from '/js/blackhole.js';
 import * as userInfo from '/js/userInfo.js';
 import * as credentials from '/js/credentials.js';
+import * as setUser from '/js/setUser.js';
 
 blackhole.blackhole('#blackhole', 1, 175, 200, 140)
 
@@ -15,7 +16,7 @@ function signUp(email, displayName, password, photoURL) {
 
     firebase.auth().createUserWithEmailAndPassword(email, password)
 
-        .then(function (user) {
+    .then(function(user) {
             user = firebase.auth().currentUser;
             var src = document.querySelector('#file').files[0];
 
@@ -27,9 +28,9 @@ function signUp(email, displayName, password, photoURL) {
             };
 
             var ref = firebase.storage().ref().child('images/' + user.uid + "/profilePic.jpg")
-            // use the Blob or File API
+                // use the Blob or File API
             ref.put(blob).then(snapshot => snapshot.ref.getDownloadURL())
-                .then(function (url) {
+                .then(function(url) {
                     const RegisteredUser = {
                         email: email,
                         description: description,
@@ -37,7 +38,7 @@ function signUp(email, displayName, password, photoURL) {
                         photoURL: url,
 
                     }
-                    firebase.database().ref('users/' + user.uid).set(RegisteredUser).then(function (user) {
+                    firebase.database().ref('users/' + user.uid).set(RegisteredUser).then(function(user) {
                         userInfo.load()
                         $("#container").load("profile.html");
                         userInfo.showFSteps()
@@ -58,12 +59,11 @@ document.getElementById("signUp").addEventListener('click', signUp, false);
 function signIn(email, displayName, password, photoURL) {
     var email = $("#emails").val();
     var password = $("#passwords").val();
-    console.log(email + password)
     firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(function (user) {
+        .then(function(user) {
             user = firebase.auth().currentUser;
             var userId = firebase.auth().currentUser.uid;
-            return firebase.database().ref('/users/' + userId).once('value').then(function (snapshot) {
+            return firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
                 var displayName = (snapshot.val() && snapshot.val().displayName) || 'Anonymous';
                 var email = (snapshot.val() && snapshot.val().email) || 'No email';
                 var photoURL = (snapshot.val() && snapshot.val().photoURL) || 'No photo URL';
@@ -71,7 +71,7 @@ function signIn(email, displayName, password, photoURL) {
                 // ...
             });
         })
-        .catch(function (error) {
+        .catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
             $("#warning").text(error.message);
@@ -82,7 +82,7 @@ function signIn(email, displayName, password, photoURL) {
 document.getElementById("signIn").addEventListener('click', signIn, false);
 
 
-document.querySelector('input[type="file"]').addEventListener('change', function () {
+document.querySelector('input[type="file"]').addEventListener('change', function() {
     console.log("la")
 
     if (this.files && this.files[0]) {

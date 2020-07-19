@@ -8,7 +8,7 @@ export function checkWallet() {
     $("#wallet-header").show()
     const connectedUser = firebase.auth().currentUser.uid
 
-    return firebase.database().ref('/users/' + connectedUser).once('value').then(function (snapshot) {
+    return firebase.database().ref('/users/' + connectedUser).once('value').then(function(snapshot) {
         var wallet = (snapshot.val() && snapshot.val().wallet);
         var transactions = (snapshot.val() && snapshot.val().transactions)
         console.log(wallet)
@@ -88,7 +88,7 @@ export function checkWallet() {
 }
 
 function checkSave() {
-    setTimeout(function () {
+    setTimeout(function() {
         if (parseInt($("#wallet-amount").html()) > 0) {
             $("#save-wallet").show()
         } else {
@@ -118,7 +118,7 @@ export function minComonz() {
     if (parsedCount > 0) {
 
         parsedCount = parsedCount - 10
-        $("#wallet-amount").html(parsedCount)
+        $("#wallet-amount").html(parsedCount + '<br>test')
         blackhole.blackhole('#blackhole', parsedCount, 220, 220, 125);
     }
 
@@ -129,10 +129,11 @@ export function minComonz() {
 document.getElementById("minus-commons").addEventListener('click', minComonz, false);
 export function addComonz() {
 
-    console.log("min")
     var parsedCount = parseInt($("#wallet-amount").html())
     parsedCount = parsedCount + 10
     $("#wallet-amount").html(parsedCount)
+    $("#euro-amount").html("Montant versé: " + parsedCount / 10 + " €")
+
 
 
 
@@ -146,7 +147,7 @@ export function saveWallet() {
     paypal.Buttons({
 
         // Set up the transaction
-        createOrder: function (data, actions) {
+        createOrder: function(data, actions) {
             var amount = $("#wallet-amount").html()
             return actions.order.create({
                 purchase_units: [{
@@ -159,8 +160,8 @@ export function saveWallet() {
         },
 
         // Finalize the transaction
-        onApprove: function (data, actions) {
-            return actions.order.capture().then(function (details) {
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
                 // Show a success message to the buyer
                 $("#paypal-button-container").html("")
 
@@ -174,7 +175,7 @@ export function saveWallet() {
 
                 $("#btns-wallet").hide()
                 $("#save-commons").hide()
-                //Paypal
+                    //Paypal
                 blackhole.blackhole('#blackhole', amount, 220, 220, 125);
 
                 firebase.database().ref('users/' + user + '/wallet/').set({
@@ -207,7 +208,7 @@ document.getElementById("save-wallet").addEventListener('click', saveWallet, fal
 export function checkWStatus() {
     const connectedUser = firebase.auth().currentUser.uid
     if (connectedUser) {
-        firebase.database().ref('/users/' + connectedUser).once('value').then(function (snapshot) {
+        firebase.database().ref('/users/' + connectedUser).once('value').then(function(snapshot) {
             var wallet = (snapshot.val() && snapshot.val().wallet);
             var transactions = (snapshot.val() && snapshot.val().transactions)
             if (wallet) {
@@ -228,7 +229,7 @@ export function checkWStatus() {
                             console.log(value);
 
                             var toUpdate = firebase.database().ref('/users/' + connectedUser + "/transactions/").child(value)
-                            toUpdate.once('value').then(function (snip) {
+                            toUpdate.once('value').then(function(snip) {
 
                                 if (snip.val().count == 0) {
                                     arrTrans++
@@ -261,7 +262,7 @@ export function checkWStatus() {
 
                         for (const author of authors) {
                             console.log(authorPool[author])
-                            firebase.database().ref('/checkouts/' + author + "/" + year + "/" + month).once('value').then(function (snip) {
+                            firebase.database().ref('/checkouts/' + author + "/" + year + "/" + month).once('value').then(function(snip) {
                                 if (snip.val() && snip.val().total) {
                                     var total = snip.val().total + authorPool[author]
                                 } else {
@@ -285,7 +286,7 @@ export function checkWStatus() {
                     });
 
 
-                    Object.keys(transactions).forEach(function (element) {
+                    Object.keys(transactions).forEach(function(element) {
                         console.log(element)
 
                     })
@@ -313,13 +314,13 @@ var $handle;
 $element
     .rangeslider({
         polyfill: false,
-        onInit: function () {
+        onInit: function() {
             $handle = $('.rangeslider__handle', this.$range);
             updateHandle($handle[0], this.value);
             updateState($handle[0], this.value);
         }
     })
-    .on('input', function () {
+    .on('input', function() {
         var minutes = Math.floor(this.value / 60)
         if (this.value < 61) {
             var seconds = this.value
@@ -359,7 +360,7 @@ function updateState(el, val) {
     }
     // Update handle color
     $handle
-        .removeClass(function (index, css) {
+        .removeClass(function(index, css) {
             return (css.match(/(^|\s)js-\S+/g) || []).join(' ');
         })
         .addClass("js-" + currentState.name);
