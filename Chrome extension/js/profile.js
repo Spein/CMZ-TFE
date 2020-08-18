@@ -49,6 +49,16 @@ document.getElementById("rfilterByCont").addEventListener('click', lists.getRece
 
 document.getElementById("rfilterByAut").addEventListener('click', lists.getReceivedPaymentsbyUsers, false);
 
+document.querySelector('input[type="file"]').addEventListener('change', function () {
+    if (this.files && this.files[0]) {
+        var storage = firebase.storage()
+        var img = document.querySelector('img'); // $('img')[0]
+        img.src = URL.createObjectURL(this.files[0]); // set src to blob url
+        var file = img.src
+        document.getElementById('saveButton').style.display = "block";
+
+    }
+});
 
 
 function logout() {

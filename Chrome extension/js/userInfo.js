@@ -1,4 +1,5 @@
 import * as blackhole from '/js/blackhole.js';
+import * as setUser from '/js/setUser.js';
 
 export function load() {
     /*     chrome.storage.local.get('contentStatus', function(result) {
@@ -8,33 +9,21 @@ export function load() {
 
             }
         }) */
-    const currentUser = firebase.auth().currentUser.uid
-    firebase.database().ref('/users/' + currentUser).once('value').then(function(snapshot) {
-
-        const connectedUser = {
-            photoURL: snapshot.val().photoURL,
-            displayName: snapshot.val().displayName,
-            email: snapshot.val().email,
-            description: snapshot.val().description
-        }
-        console.log(connectedUser)
-
-        checkSupport()
-        $("#displayName").text(connectedUser.displayName);
-        $("#avatarPic").attr("src", connectedUser.photoURL);
-        $("#email").text(connectedUser.email);
-        $("#description").text(connectedUser.description);
-    }).catch((err) => { console.log(err) })
-
-
-
+        setUser.retrieveUser().then(user=>{
+            console.log(user)
+            fillFields(user)
+                })
+        .then(
+            checkSupport()
+        )
 
 }
-export function showFSteps() {
-    $("#tutorials").show()
-    $("#first-steps").show()
+export function fillFields(connectedUser){
+    $("#displayName").text(connectedUser.displayName);
+    $("#avatarPic").attr("src", connectedUser.photoURL);
+    $("#email").text(connectedUser.email);
+    $("#description").text(connectedUser.description);
 }
-
 
 export function checkProfile() {
     $("#blackhole").html("")
@@ -62,6 +51,8 @@ export function writeUserData() {
     var currentUser = firebase.auth().currentUser
     var db = firebase.database()
     var email = $("#email").text();
+    var displayName = $("#displayName").text();
+    var description = $("#description").text()
     if (email != currentUser.email) {
         currentUser.updateEmail(email).then(function() {
             console.log('email changed')
@@ -69,27 +60,33 @@ export function writeUserData() {
             // An error happened.
         });
     }
-    var photoURL = $("#avatarPic").attr("src");
-    var displayName = $("#displayName").text();
-    var description = $("#description").text()
+ 
+    setUser.createBlob()
+    .then(blob => setUser.storeImage(currentUser, blob))
+    .then(function (url) {
+        db.ref('users/' + currentUser.uid).update({
+            displayName: displayName,
+            photoURL: url,
+            email: email,
+            description: description
+    
+        }).then(
+            document.getElementById('saveButton').style.display = "none",
+            document.getElementById('notifications-h').html("<p>Profile updated!</p>")
 
-    db.ref('users/' + currentUser.uid).update({
-        displayName: displayName,
-        photoURL: photoURL,
-        email: email,
-        description: description
 
-    }).then(function() {
-        chrome.storage.local.set({ 'displayName': displayName });
-        chrome.storage.local.set({ 'email': email });
-        chrome.storage.local.set({ 'photoURL': photoURL });
-        chrome.storage.local.set({ 'description': description });
+        ).catch(function(error) {
+            console.log(" An error happened" + error)
+            document.getElementById('saveButton').style.display = "none",
+            document.getElementById('notifications-h').html("<p>Something went wrong!</p>")
 
-        console.log("Update successful")
-    }).catch(function(error) {
-        console.log(" An error happened")
-    });
+        });
+    })
+    .then(setUser.setUser(currentUser.uid))
+
+   
 
 
 
 }
+

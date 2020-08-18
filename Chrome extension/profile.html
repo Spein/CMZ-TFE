@@ -41,18 +41,19 @@
             <!--***/// Panels body ///*** -->
             <!--***/// Panel Header ///*** -->
             <div id="panel-header" class="panel-header text-center">
+                <div id="notifications-h"></div>
                 <div class="header" id="profile-header">
                     <div class="logout-area">
 
                         <i class="fas fa-sign-out-alt" id="logout-button"></i>
                     </div>
                     <div class="square">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <figure class="avatar avatar-lg content"><img id="avatarPic" src="" alt="Avatar"></figure>
-                    </div>
+                      
+                        <figure class="avatar avatar-lg" id="avatar-container"><label for="file" class="label-file"><i class="fas fa-upload"></i></label>
+                            <input id="file" class="input-file" type="file"><img id='avatarPic' style="background: none;" src="" alt="">
+                        </figure>
+<!--                         <figure class="avatar avatar-lg content"><img id="avatarPic" src="" alt="Avatar"></figure>
+ -->                    </div>
                 </div>
                 <div class="header" id="wallet-header" style="display:none">
                     <i id="create-wallet" class="fas fa-wallet" style="display:none;margin:6%;font-size:50px"></i>
@@ -101,6 +102,9 @@
                     <div id="no-wallet">
 
                         <p style="font-size:12px;padding: 3%;">No Wallet yet. Click on the icon to create one</p>
+                    </div>
+                    <div id="fix-wallet">
+                        
                     </div>
                     <div id="wallet-on" style="display:none" class=" col-12 col-xs-12">
                         <label for="panel_size" style="margin-bottom: 5vh;">Fix the amount of CoMonZ you want to fix for this month</label>

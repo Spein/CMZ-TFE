@@ -465,10 +465,12 @@ button#check-iban {
     color: #d95555;
 }
 
-.label-file:hover {
-    color: #25a5c4;
+#avatar-container i {
+    visibility: hidden;
 }
-
+#avatar-container:hover i {
+    visibility: visible;
+}
 .input-file {
     display: none;
 }

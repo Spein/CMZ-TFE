@@ -1,3 +1,5 @@
+import * as setUser from '/js/setUser.js';
+
 var config = {
     apiKey: "AIzaSyAdxBw7BVvGgtp0PliC5y_xXPfv35nDEuw",
     authDomain: "pressformore-c0045.firebaseapp.com",
@@ -13,21 +15,19 @@ firebase.initializeApp(config);
 
 export function displayView(user) {
     if (user) {
-        chrome.storage.local.get('contentStatus', function(result) {
+        setUser.setUser(user.uid).then(
+            chrome.storage.local.get('contentStatus', function(result) {
             if (result.contentStatus == 'content') {
-                console.log("content")
                 $("#container").load("onContent.html");
 
             } else {
-                console.log("notcontent")
-
-
                 $("#container").load("profile.html");
 
             }
-        });
-    } else {
+        }))}
+        else {
         $("#container").load("sign-in.html");
+        localStorage.clear();
     }
 }
 
@@ -35,8 +35,7 @@ export function displayView(user) {
 
 function initApp() {
     firebase.auth().onAuthStateChanged(function(user) {
-
-        setTimeout(displayView(user), 200);
+        displayView(user);
     });
 }
 
