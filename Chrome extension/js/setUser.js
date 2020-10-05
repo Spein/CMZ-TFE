@@ -2,11 +2,14 @@ export function setUser(user) {
     return new Promise(function (resolve, reject) {
 
             return firebase.database().ref('/users/' + user).once('value').then(function(snapshot) {
+                console.log(user)
                 var userData = [{
+                    uid:user,
                     displayName: (snapshot.val() && snapshot.val().displayName) || null,
                     email: (snapshot.val() && snapshot.val().email) || null,
                     photoURL: (snapshot.val() && snapshot.val().photoURL) || null,
                     description: (snapshot.val() && snapshot.val().description) || null,
+                    transactions:(snapshot.val() && snapshot.val().transactions) || null,
                     walletStatus: (snapshot.val().wallet && snapshot.val().wallet.status) || null,
                     walletAmount: (snapshot.val().wallet && snapshot.val().wallet.amount) || null,
                     walletStartDate: (snapshot.val().wallet && snapshot.val().wallet.startDate) || null,
@@ -15,18 +18,18 @@ export function setUser(user) {
                     authorKey: (snapshot.val().authorDetails && snapshot.val().authorDetails.key) || null,
                     authorbankAccount : (snapshot.val().authorDetails && snapshot.val().authorDetails.bankAccount) || null
                 }]
-                localStorage.setItem('user', JSON.stringify(userData));
+                resolve(localStorage.setItem('user', JSON.stringify(userData)));
 
 
                 // ...
-            }).then(resolve);
+            });
    
         })
 }
 
 export function retrieveUser() {
     return new Promise(function (resolve, reject) {
-
+    console.log(localStorage)
     var user = JSON.parse(localStorage.getItem('user'))[0];
     resolve(user)})
 

@@ -2,27 +2,22 @@ import * as blackhole from '/js/blackhole.js';
 import * as setUser from '/js/setUser.js';
 
 export function load() {
-    /*     chrome.storage.local.get('contentStatus', function(result) {
-            console.log(result.contentStatus)
-            if (result.contentStatus == 'content') {
-                $("#content-back").show()
 
-            }
-        }) */
-        setUser.retrieveUser().then(user=>{
-            console.log(user)
-            fillFields(user)
-                })
+    setUser.retrieveUser().then(user => {
+
+        fillFields(user)
+    })
         .then(
             checkSupport()
         )
 
 }
-export function fillFields(connectedUser){
-    $("#displayName").text(connectedUser.displayName);
-    $("#avatarPic").attr("src", connectedUser.photoURL);
-    $("#email").text(connectedUser.email);
-    $("#description").text(connectedUser.description);
+export function fillFields(user) {
+    console.log(user)
+    $("#displayName").text(user.displayName);
+    $("#avatarPic").attr("src", user.photoURL);
+    $("#email").text(user.email);
+    $("#description").text(user.description);
 }
 
 export function checkProfile() {
@@ -35,11 +30,11 @@ export function checkProfile() {
 
 }
 export function checkSupport() {
-    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         var user = firebase.auth().currentUser.uid
         var url = tabs[0].url.replace(/[^\w\s]/gi, '_')
         console.log(url)
-        firebase.database().ref('/wishes/' + url).once('value').then(function(snapshot) {
+        firebase.database().ref('/wishes/' + url).once('value').then(function (snapshot) {
             if (snapshot.val() && snapshot.val()[user]) {
                 $("#wishes").html("<i style='color:#d95555' class='fas fa-seedling'></i><p>You have already indicated your interest in this content and we have probably already contacted its Creator</p>")
 
@@ -54,37 +49,39 @@ export function writeUserData() {
     var displayName = $("#displayName").text();
     var description = $("#description").text()
     if (email != currentUser.email) {
-        currentUser.updateEmail(email).then(function() {
-            console.log('email changed')
-        }).catch(function(error) {
+        currentUser.updateEmail(email).then(function () {
+        }).catch(function (error) {
             // An error happened.
         });
     }
- 
+
     setUser.createBlob()
-    .then(blob => setUser.storeImage(currentUser, blob))
-    .then(function (url) {
-        db.ref('users/' + currentUser.uid).update({
-            displayName: displayName,
-            photoURL: url,
-            email: email,
-            description: description
-    
-        }).then(
-            document.getElementById('saveButton').style.display = "none",
-            document.getElementById('notifications-h').html("<p>Profile updated!</p>")
+        .then(blob => setUser.storeImage(currentUser, blob))
+        .then(function (url) {
+            console.log(url)
+            db.ref('users/' + currentUser.uid).update({
+                displayName: displayName,
+                photoURL: url,
+                email: email,
+                description: description
+
+            }).then(
+                $('#saveButton').hide(),
+                $('#notifications-h').html("<p>Profile updated!</p>")
 
 
-        ).catch(function(error) {
+            ).then(setUser.setUser(currentUser.uid))
+
+
+        })
+        .catch(function (error) {
             console.log(" An error happened" + error)
-            document.getElementById('saveButton').style.display = "none",
-            document.getElementById('notifications-h').html("<p>Something went wrong!</p>")
+            $('#saveButton').hide()
+            $('#notifications-h').html("<p>Something went wrong!</p>")
 
         });
-    })
-    .then(setUser.setUser(currentUser.uid))
 
-   
+
 
 
 

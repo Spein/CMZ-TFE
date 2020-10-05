@@ -253,10 +253,10 @@ canvas {
     z-index: 1;
 }
 
-#description-container::after {
+/* #description-container::after {
     content: ' "'
 }
-
+ */
 #vcomment-field,
 #verify-change {
     display: flex;
@@ -265,9 +265,9 @@ canvas {
     flex-direction: column;
 }
 
-#description-container::before {
+/* #description-container::before {
     content: '" '
-}
+} */
 
 #date-container {
     width: 100%;

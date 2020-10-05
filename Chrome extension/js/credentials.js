@@ -11,31 +11,41 @@ var config = {
 
 firebase.initializeApp(config);
 
-
-
 export function displayView(user) {
-    if (user) {
-        setUser.setUser(user.uid).then(
-            chrome.storage.local.get('contentStatus', function(result) {
-            if (result.contentStatus == 'content') {
-                $("#container").load("onContent.html");
+    chrome.storage.local.get('contentStatus', function(result) {
+        if (user) {
 
-            } else {
-                $("#container").load("profile.html");
-
-            }
-        }))}
-        else {
-        $("#container").load("sign-in.html");
-        localStorage.clear();
-    }
-}
+                    chrome.storage.local.get('contentStatus', function(result) {
+                        if (result.contentStatus == 'content') {
+                            console.log("content loaded")
+                            $("#container").load("onContent.html");
+            
+                        } else {
+                            console.log("profile loaded")            
+                            $("#container").load("profile.html");
+            
+                        } 
+                    })
+    
+                
+       
+            
+        }
+        else{
+            $("#container").load("sign-in.html");
+            localStorage.clear();
+        }
+        })    }
 
 
 
 function initApp() {
     firebase.auth().onAuthStateChanged(function(user) {
-        displayView(user);
+        setUser.setUser(user.uid).then(
+            displayView(user),
+            console.log("authchanged but not")
+        )
+
     });
 }
 

@@ -5,49 +5,46 @@ var key;
 var tz = moment.tz.guess(true)
 
 function getContent() {
-    chrome.storage.local.get('key', function(retour) {
+    chrome.storage.local.get('key', function (retour) {
         var commonzkey = retour.key;
-        chrome.storage.local.get('url', function(result) {
-
+        chrome.storage.local.get('url', function (result) {
             var url = result.url;
             var currentUser = firebase.auth().currentUser.uid
             $("#comment").html("   ")
-
             const dataRef = firebase.database().ref('/users/' + currentUser + '/transactions').child(url)
-
-
             if (commonzkey !== null) {
                 var comRef = firebase.database().ref('transactions/')
-
-                firebase.database().ref('/users/' + currentUser).once('value').then(function(snip) {
+                firebase.database().ref('/users/' + currentUser)
+                .once('value')
+                .then(function (snip) {
 
                     var wallet = (snip.val() && snip.val().wallet);
-                    var walletEndate = wallet.endDate
                     var fundDate
                     var diffTime
 
-                    firebase.database().ref('/transactions/' + commonzkey + '/' + url + "/cTransactions/" + currentUser + "/date").once('value').then((data) => {
+                    firebase.database().ref('/transactions/' + commonzkey + '/' + url + "/cTransactions/" + currentUser + "/date")
+                    .once('value')
+                    .then((data) => {
                         if (data && data.val()) {
                             diffTime = new Date(walletEndate).getTime() > new Date(data.val()).getTime()
                             fundDate = moment.tz((data.val().substring(1, 25)), tz).fromNow()
                         }
 
 
-
-
-
                         if (wallet) {
+                            var walletEndate = wallet.endDate
+
                             $("#wallet-on").show()
                             $("#wallet-off").hide()
 
 
-                            dataRef.on("value", function(snop) {
+                            dataRef.on("value", function (snop) {
 
                                 if (snop.val() !== undefined && snop.val() !== null) {
                                     console.log(snop.val())
                                     var date = snop.val().onDate;
                                     var count = snop.val().count;
-                                    comRef.on("value", function(snep) {
+                                    comRef.on("value", function (snep) {
                                         var userCom = snep.val() && snep.val()[currentUser]
                                         if (userCom) {
                                             var moDate = moment.tz((snep.val()[currentUser].date.substring(1, 25)), tz).fromNow();
@@ -64,9 +61,9 @@ function getContent() {
                                         }
                                     })
                                     if (count > 0) {
-                                        setInterval(function() {
+                                        setInterval(function () {
 
-                                            chrome.storage.local.get('progress', function(result) {
+                                            chrome.storage.local.get('progress', function (result) {
                                                 $("#statut-transaction").html("<p>CoMonZ dropped in :<br>" + result.progress + " seconds</p>")
 
                                             })
@@ -93,8 +90,8 @@ function getContent() {
                                     }
                                     var editables = document.getElementsByClassName("editable")
                                     for (var i = 0; i < editables.length; i++) {
-                                        (function(index) {
-                                            editables[index].addEventListener("input", function() {
+                                        (function (index) {
+                                            editables[index].addEventListener("input", function () {
                                                 if ($("#comment").html().length > 1) {
 
                                                     $("#vcomment").show()
@@ -120,10 +117,10 @@ function getContent() {
 
 
 
-                            firebase.database().ref('/transactions/' + commonzkey).once('value').then(function(snip) {
+                            firebase.database().ref('/transactions/' + commonzkey).once('value').then(function (snip) {
                                 var author = (snip.val() && snip.val().authorId);
 
-                                firebase.database().ref('/users/' + author).once('value').then(function(snapshot) {
+                                firebase.database().ref('/users/' + author).once('value').then(function (snapshot) {
 
                                     var authorDisplayname = (snapshot.val() && snapshot.val().displayName);
                                     var authorphotoURL = (snapshot.val() && snapshot.val().photoURL);
@@ -137,7 +134,7 @@ function getContent() {
                                 })
                             })
 
-                            firebase.database().ref('/transactions/' + commonzkey + '/' + url + '/cTransactions').once('value').then(function(snapshot) {
+                            firebase.database().ref('/transactions/' + commonzkey + '/' + url + '/cTransactions').once('value').then(function (snapshot) {
                                 if (snapshot.val()) {
                                     var commoners = Object.keys(snapshot.val()).length;
                                     blackhole.blackhole('#blackhole', commoners, 220, 220, 125);
@@ -146,7 +143,7 @@ function getContent() {
                                 } else if (snapshot.val() == undefined) {
                                     $("#statut-transaction").text("pas encore de support")
                                     blackhole.blackhole('#blackhole', 1, 220, 220, 85);
-                                    firebase.database().ref('/users/' + currentUser + '/transactions/' + url).once('value').then(function(snip) {
+                                    firebase.database().ref('/users/' + currentUser + '/transactions/' + url).once('value').then(function (snip) {
 
                                         if (snip.val() == null || snip.val() == undefined) {
                                             $("#vcomment-field").hide()
@@ -160,11 +157,11 @@ function getContent() {
                             })
 
                             var comRef = firebase.database().ref('transactions/' + commonzkey + "/" + url + "/comments")
-                            comRef.on("value", function(snep) {
+                            comRef.on("value", function (snep) {
                                 const comments = snep.val()
                                 if (comments) {
                                     Object.keys(comments).forEach((userIds, index) => {
-                                        firebase.database().ref('users/' + userIds).once('value').then(function(snoip) {
+                                        firebase.database().ref('users/' + userIds).once('value').then(function (snoip) {
                                             var authorDisplayname = (snoip.val() && snoip.val().displayName);
                                             var authorphotoURL = (snoip.val() && snoip.val().photoURL);
 
@@ -177,10 +174,10 @@ function getContent() {
                             })
                         } else {
 
-                            firebase.database().ref('/transactions/' + commonzkey).once('value').then(function(snip) {
+                            firebase.database().ref('/transactions/' + commonzkey).once('value').then(function (snip) {
                                 var author = (snip.val() && snip.val().authorId);
 
-                                firebase.database().ref('/users/' + author).once('value').then(function(snapshot) {
+                                firebase.database().ref('/users/' + author).once('value').then(function (snapshot) {
 
                                     var authorDisplayname = (snapshot.val() && snapshot.val().displayName);
                                     var authorphotoURL = (snapshot.val() && snapshot.val().photoURL);
@@ -233,9 +230,9 @@ function getContent() {
     })
 
     function cancelFund() {
-        chrome.storage.local.get('url', function(result) {
+        chrome.storage.local.get('url', function (result) {
             var user = firebase.auth().currentUser.uid
-            chrome.storage.local.get('key', function(retour) {
+            chrome.storage.local.get('key', function (retour) {
                 var commonzkey = retour.key;
 
                 var url = result.url;

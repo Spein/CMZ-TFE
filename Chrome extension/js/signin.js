@@ -47,6 +47,7 @@ function signIn() {
         .then(function (user) {
             user = firebase.auth().currentUser.uid;
             setUser.setUser(user)
+
         })
         .catch(function (error) {
             // Handle Errors here.

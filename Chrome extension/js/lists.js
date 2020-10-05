@@ -16,7 +16,7 @@ export function getUserpaidContents() {
                     var authorKey = snapi.val().authorKey
                     var status = snapi.val().status
                     console.log(snapi.val())
-                    if (snapi.val() && snapi.val().count == 0) {
+                    if (snapi.val() && (snapi.val().count == 0||snapi.val().count == 'payé' )) {
 
                         firebase.database().ref('/transactions/' + authorKey).once('value').then(function (snip) {
                             var authorId = snip.val().authorId
@@ -29,15 +29,18 @@ export function getUserpaidContents() {
                                     var title = snop.val().title
 
                                     firebase.database().ref('/transactions/' + authorKey + "/" + element + "/cTransactions").child(userId).once('value').then(function (snup) {
-                                        if (snup.val()) {
-                                            var date = snup.val().date
-                                            console.log(date)
+                                        var date = snup.val().date
+                                        var subDate = date.substring(1, 25)
+                                        var moDate = moment.tz((subDate), tz).fromNow();
+                                        var shortTitle = title.substring(0, 35) + "..."
 
-                                            var subDate = date.substring(1, 25)
-                                            var moDate = moment.tz((subDate), tz).fromNow();
-                                            var shortTitle = title.substring(0, 35) + "..."
-
+                                        if (snup.val() && snapi.val().count == 0) {
+                                         
                                             div.innerHTML += '<div class="transaction"><div class="first-trcontainer"><p class="tr-title">' + shortTitle + '</p><p class="tr-date">' + moDate + '</p></div><div class="second-trcontainer"> <figure class="avatar avatar-sm"><img id="avatarPic" src="' + authorphotoURL + '" alt="Avatar"></figure><p>' + authorDisplayname + '</p></div></div>'
+
+                                        }
+                                        else{
+                                            div.innerHTML += '<div class="transaction payed"><div class="first-trcontainer"><p class="tr-title">' + shortTitle + '</p><p class="tr-date">' + moDate + '</p></div><div class="second-trcontainer"> <figure class="avatar avatar-sm"><img id="avatarPic" src="' + authorphotoURL + '" alt="Avatar"></figure><p>' + authorDisplayname + '</p></div></div>'
 
                                         }
                                     })
@@ -251,12 +254,6 @@ export function getReceivedPaymentsbyUsers() {
                 })
 
             })
-
-
-
-
-
-
         })
     })
 }

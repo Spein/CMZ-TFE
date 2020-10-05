@@ -64,7 +64,6 @@ request.onreadystatechange = function() {
                 }
             }
         }
-        /*  alert(elementOfInterest[0].outerHTML);<--mettre la suite du code ici */
 
     }
 
