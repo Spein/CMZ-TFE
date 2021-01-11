@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "CoMonZ, a winning altogether",
-    "description": "A real torough way to win money in communs.",
-    "version": "2.3",
+    "name": "CoMonZ",
+    "description": "Commons are priceless, value-added by your love",
+    "version": "2.8",
     "icons": {
         "128": "./logo/logo-base.png"
     },
@@ -28,7 +28,7 @@
     ],
     "content_scripts": [{
         "matches": ["http://*/*", "https://*/*"],
-        "js": ["content.js", "js/jquery.js", "js/rangeslider.min.js", "js/underscore-min.js", "js/signin.js", "js/profile.js", "js/onContent.js", "js/moment.js"],
+        "js": ["content.js", "js/jquery.js", "js/rangeslider.min.js", "js/underscore-min.js", "js/signin.js", "js/profile.js", "js/setUser.js", "js/onContent.js", "js/moment.js"],
         "run_at": "document_start"
     }],
 

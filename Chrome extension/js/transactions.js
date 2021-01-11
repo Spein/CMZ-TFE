@@ -1,19 +1,19 @@
 import * as blackhole from '/js/blackhole.js';
 import * as lists from '/js/lists.js';
+import * as setUser from '/js/setUser.js';
+
 export function firstCheck() {
     $("#blackhole").html("")
     $("#profile-header").hide()
     $("#wallet-header").hide()
     $("#transaction-header").show()
-    var userId = firebase.auth().currentUser.uid;
-    return firebase.database().ref('/users/' + userId).once('value').then(function (snapshot) {
-        var wallet = (snapshot.val() && snapshot.val().wallet);
-        console.log(wallet)
-        if (wallet) {
+    setUser.retrieveUser().then(user => {
+        var walletStatus = user.walletStatus;
+        if (walletStatus) {
             $("#need-wallet").hide()
             checkAuthor()
 
-        } else if (wallet == undefined) {
+        } else  {
             $("#need-wallet").show()
             $("#commoners").hide()
             $("#wallet-amount").html(0)
@@ -84,10 +84,7 @@ export function checkAuthor() {
                         $("#footer-received").show()
 
                     }
-
-
                 })
-
             })
 
 
@@ -117,9 +114,10 @@ $("#cgu").change(function () {
     }
 });
 export function createAuthor() {
+    setUser.retrieveUser().then(user => {
 
     var authorKey = Math.random().toString(36).slice(-10);
-    var userId = firebase.auth().currentUser.uid
+    var userId = user.uid
     var iban = $("#iban-input").val();
 
     firebase.database().ref('users/' + userId + '/authorDetails').set({
@@ -127,12 +125,12 @@ export function createAuthor() {
         key: authorKey,
         bankAccount: iban,
 
-    });
+    }).then(setUser.setUser());
 
     firebase.database().ref('transactions/' + authorKey).set({
         authorId: userId,
     });
-    checkAuthor()
+}).then(checkAuthor())
 
 }
 
@@ -146,7 +144,7 @@ export function alertValidIBAN(iban) {
 
 
     } else {
-        $("#warning-iban").html("<p class='label label-error mr-1'>Mauvais numéro IBAN</p>")
+        $("#warning-iban").html("<p class='label label-error mr-1'>Wrong IBAN number </p>")
 
     };
 
@@ -167,7 +165,7 @@ export function alertValidIBAN2(iban) {
 
 
     } else {
-        $("#warning-iban2").html("<p class='label label-error mr-1'>Mauvais numéro IBAN</p>")
+        $("#warning-iban2").html("<p class='label label-error mr-1'>Wrong IBAN number </p>")
 
     };
 

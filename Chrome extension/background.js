@@ -200,7 +200,7 @@ function initApp() {
 
                                 function updateRef() {
                                     countRef.update({
-                                        count: "payé",
+                                        count: "a payer",
                                     })
 
                                     firebase.database().ref('transactions/' + pfmkey + "/" + url).once('value').then(function (snapshot) {

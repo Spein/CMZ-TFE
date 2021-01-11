@@ -253,10 +253,10 @@ canvas {
     z-index: 1;
 }
 
-#description-container::after {
+/* #description-container::after {
     content: ' "'
 }
-
+ */
 #vcomment-field,
 #verify-change {
     display: flex;
@@ -265,9 +265,9 @@ canvas {
     flex-direction: column;
 }
 
-#description-container::before {
+/* #description-container::before {
     content: '" '
-}
+} */
 
 #date-container {
     width: 100%;
@@ -361,7 +361,6 @@ canvas {
     background: #d95555;
     border-color: #6d3131;
     color: #fff;
-    margin: 3%;
 }
 
 span#commons-key {
@@ -397,6 +396,7 @@ div#email-container {
 
 button#check-iban {
     float: right;
+    width:35vw
 }
 
 .btn.btn-primary:focus,
@@ -465,10 +465,12 @@ button#check-iban {
     color: #d95555;
 }
 
-.label-file:hover {
-    color: #25a5c4;
+#avatar-container i {
+    visibility: hidden;
 }
-
+#avatar-container:hover i {
+    visibility: visible;
+}
 .input-file {
     display: none;
 }
@@ -594,6 +596,7 @@ p.tr-title {
 
 #cgu-container {
     display: flex;
+    text-align: center;
 }
 
 .square {
@@ -673,7 +676,6 @@ p.tr-title {
 
 label {
     display: block;
-    margin-bottom: 2.5em;
     font-size: 13px;
     font-weight: bold;
 }
@@ -803,4 +805,7 @@ input[type="range"]:focus+.rangeslider .rangeslider__handle {
     -moz-box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
     -webkit-box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
     box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
+}
+.panel-body.wallet-o.active {
+    padding: 3%;
 }

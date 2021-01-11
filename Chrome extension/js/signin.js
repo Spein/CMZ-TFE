@@ -1,7 +1,5 @@
 import * as blackhole from '/js/blackhole.js';
-import * as userInfo from '/js/userInfo.js';
-import * as credentials from '/js/credentials.js';
-
+import * as setUser from '/js/setUser.js';
 blackhole.blackhole('#blackhole', 1, 175, 200, 140)
 
 
@@ -11,24 +9,12 @@ function signUp(email, displayName, password, photoURL) {
     var displayName = $("#displayName").val();
     var description = $("#description").val();
     var user = null;
-
-
     firebase.auth().createUserWithEmailAndPassword(email, password)
 
         .then(function (user) {
-            user = firebase.auth().currentUser;
-            var src = document.querySelector('#file').files[0];
 
-            var blob = new Blob([src], { type: "image/jpeg" });
-
-            console.log(blob)
-            var metadata = {
-                contentType: 'image/jpeg',
-            };
-
-            var ref = firebase.storage().ref().child('images/' + user.uid + "/profilePic.jpg")
-            // use the Blob or File API
-            ref.put(blob).then(snapshot => snapshot.ref.getDownloadURL())
+            setUser.createBlob()
+                .then(blob => setUser.storeImage(user, blob))
                 .then(function (url) {
                     const RegisteredUser = {
                         email: email,
@@ -37,39 +23,31 @@ function signUp(email, displayName, password, photoURL) {
                         photoURL: url,
 
                     }
-                    firebase.database().ref('users/' + user.uid).set(RegisteredUser).then(function (user) {
-                        userInfo.load()
-                        $("#container").load("profile.html");
-                        userInfo.showFSteps()
+                    firebase.database().ref('users/' + user.uid).set(RegisteredUser)  
+                    .then(function (user) {
+                        user = firebase.auth().currentUser.uid;
+                        setUser.setUser(user)
 
-                    });
+                    })
+
                 });
 
         })
         .catch((error) => {
             $("#warning").text(error.message);
         });
-    console.log('Validation link was sent to ' + email + '.');
 
 }
 
-document.getElementById("signUp").addEventListener('click', signUp, false);
 
-function signIn(email, displayName, password, photoURL) {
+function signIn() {
     var email = $("#emails").val();
     var password = $("#passwords").val();
-    console.log(email + password)
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then(function (user) {
-            user = firebase.auth().currentUser;
-            var userId = firebase.auth().currentUser.uid;
-            return firebase.database().ref('/users/' + userId).once('value').then(function (snapshot) {
-                var displayName = (snapshot.val() && snapshot.val().displayName) || 'Anonymous';
-                var email = (snapshot.val() && snapshot.val().email) || 'No email';
-                var photoURL = (snapshot.val() && snapshot.val().photoURL) || 'No photo URL';
-                var description = (snapshot.val() && snapshot.val().description) || 'No description';
-                // ...
-            });
+            user = firebase.auth().currentUser.uid;
+            setUser.setUser(user)
+
         })
         .catch(function (error) {
             // Handle Errors here.
@@ -79,12 +57,9 @@ function signIn(email, displayName, password, photoURL) {
         });
 }
 
-document.getElementById("signIn").addEventListener('click', signIn, false);
 
 
 document.querySelector('input[type="file"]').addEventListener('change', function () {
-    console.log("la")
-
     if (this.files && this.files[0]) {
         var storage = firebase.storage()
         var img = document.querySelector('img'); // $('img')[0]
@@ -106,5 +81,8 @@ function existingMember() {
     $("#emailsignIn").show();
 
 }
+
+document.getElementById("signUp").addEventListener('click', signUp, false);
+document.getElementById("signIn").addEventListener('click', signIn, false);
 document.getElementById("new-member").addEventListener('click', newMember, false);
 document.getElementById("existing-member").addEventListener('click', existingMember, false);

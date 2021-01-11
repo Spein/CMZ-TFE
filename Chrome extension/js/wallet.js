@@ -1,90 +1,90 @@
 import * as blackhole from '/js/blackhole.js';
 import * as lists from '/js/lists.js';
-moment().local("fr")
+import * as setUser from '/js/setUser.js';
+
+moment()
 export function checkWallet() {
+    $("#paypal-button-container").html("")
+
     $("#blackhole").html("")
     $("#profile-header").hide()
     $("#transaction-header").hide()
     $("#wallet-header").show()
-    const connectedUser = firebase.auth().currentUser.uid
+    $("#transactions-footer").show()
 
-    return firebase.database().ref('/users/' + connectedUser).once('value').then(function (snapshot) {
-        var wallet = (snapshot.val() && snapshot.val().wallet);
-        var transactions = (snapshot.val() && snapshot.val().transactions)
-        console.log(wallet)
-        if (wallet) {
-            var attCounter = (snapshot.val() && snapshot.val().wallet.Attcounter)
+    setUser.retrieveUser().then(user => {
+        var walletStatus = user.walletStatus;
+        var userUid=user.uid
+        var transactions = user.transactions
+        console.log(walletStatus,transactions)
+         if (walletStatus==="active") {
+            var attCounter = user.attCounter
 
             $("#create-wallet").hide()
+            $("#no-wallet").hide()
 
             $("#wallet-amount").show()
             $("#commonZ").show()
-            var moDate = moment(wallet.startDate.substring(1, 20)).fromNow();
-            console.log(wallet.startDate.substring(1, 20))
+            var moDate = moment(user.walletStartDate.substring(1, 20)).fromNow();
             $("#wallet-amount").html(wallet.amount)
             blackhole.blackhole('#blackhole', $("#wallet-amount").html(), 220, 220, 125);
-            document.querySelector("#wallet-startDate").innerHTML = moment(wallet.startDate.substring(1, 11)).format('DD/MM/YYYY')
-            document.querySelector("#wallet-endDate").innerHTML = moment(wallet.endDate.substring(1, 11)).format('DD/MM/YYYY')
+            document.querySelector("#wallet-startDate").innerHTML = moment(user.walletStartDate.substring(1, 11)).format('DD/MM/YYYY')
+            document.querySelector("#wallet-endDate").innerHTML = moment(user.walletStartDate.substring(1, 11)).format('DD/MM/YYYY')
+            $("#btns-wallet").hide()
+            $("#save-wallet").hide()
+            var minutes = Math.floor(attCounter / 60)
+            if (attCounter < 61 && !attCounter == 60) {
+                var seconds = attCounter
 
-            if (transactions) {
-                lists.getUserpaidContents()
-                $("#no-transactions").hide()
-
-            } else {
-                $("#no-transactions").show()
-            }
-            if (wallet.status == "inactive") {
-                $("#btns-wallet").show()
-                $("#statut-commons").html("<p>Votre période est dépassée. <p> Ajoutez ici vos coMonZ et déterminez votre temps d'attention </p><p>Votre temps d'attention est de :<br><span id='attCounter'>1 minute et 0 secondes</span></p>")
-                $("#date-container").hide()
-
-
+            } else if (attCounter = 60) {
+                var seconds = 0
+                minutes = 1
 
             } else {
-                $("#btns-wallet").hide()
-                $("#save-wallet").hide()
-                var minutes = Math.floor(attCounter / 60)
-                if (attCounter < 61 && !attCounter == 60) {
-                    var seconds = attCounter
-
-                } else if (attCounter = 60) {
-                    var seconds = 0
-                    minutes = 1
-
-                } else {
-                    var seconds = attCounter - (60 * minutes)
-                }
-                console.log(attCounter)
-                $("#statut-commons").html("<p>Votre portefeuille a été rempli " + moDate + "</p><p>Votre temps d'attention est de :<br><span id='attCounter'></span></p>")
-                $("#attCounter").html(minutes + " minutes " + seconds + " secondes")
-
-                $("#statut-commons").show()
-                $("#date-container").show()
-
-
+                var seconds = attCounter - (60 * minutes)
             }
+            console.log(attCounter)
+            $("#statut-commons").html("<p>Your wallet is full of coMonZ for " + moDate + "</p><p>You've set your commitment at :<br><span id='attCounter'></span></p>")
+            $("#attCounter").html(minutes + " minutes " + seconds + " seconds")
+
+            $("#statut-commons").show()
+            $("#date-container").show()
+           
+        
             $("#no-wallet").hide()
             $("#wallet-on").show()
 
 
 
-        } else if (wallet == undefined) {
+        }   
+        else if (walletStatus === "inactive") {
+            $("#no-wallet").hide()
+            $("#create-wallet").hide()
+            $("#wallet-active").show()
+            $("#btns-wallet").show()
+            $("#statut-commons").html("<p>Your active period is over.<br> Add your coMonZ here and determine your attention time </p> <p> Your attention time is: <br> <span id = 'attCounter'> 1 minute and 0 seconds</span></p>")
+
+        }  
+        
+        else if (!walletStatus) {
             blackhole.blackhole('#blackhole', 1, 220, 220, 125)
             $("#no-wallet").show()
-            $("#commonZ").hide()
-            $("#btns-wallet").hide()
+            $("#wallet-charged").hide()
             $("#create-wallet").show()
-            $("#paypal-button-container").html("")
-
 
 
         }
-        // ...
-    });
+        if (transactions) {
+            lists.getUserpaidContents()
+            $("#no-transactions").hide()
+            $("#transactions-sent").show()
 
+        } else {
+            $("#no-transactions").show()
+            $("#transactions-sent").hide()
 
-
-
+        } 
+    })
 }
 
 function checkSave() {
@@ -96,7 +96,7 @@ function checkSave() {
 
         }
 
-    }, 200)
+    }, 100)
 
 }
 document.getElementById("minus-commons").addEventListener('click', checkSave, false);
@@ -107,7 +107,7 @@ export function createWallet() {
     $("#create-wallet").hide()
     $("#wallet-amount").show()
     $("#btns-wallet").show()
-    $("#statut-commons").html("<p> Ajoutez ici vos coMonZ et déterminez votre temps d'attention </p><p>Votre temps d'attention est de :<br><span id='attCounter'>1 minute et 0 secondes</span></p>")
+    $("#statut-commons").html("<p>Add your coMonZ here and determine your attention time </p> <p> Your attention time is: <br> <span id = 'attCounter'> 1 minute and 0 seconds</span></p>")
     $("#wallet-on").show()
     $("#commonZ").show()
 
@@ -116,32 +116,31 @@ export function minComonz() {
 
     var parsedCount = parseInt($("#wallet-amount").html())
     if (parsedCount > 0) {
-
+        console.log(parsedCount)
         parsedCount = parsedCount - 10
-        $("#wallet-amount").html(parsedCount)
+        $("#wallet-amount").html(parsedCount + '<br>')
+        $("#euro-amount").html("Montant versé: " + parsedCount / 10 + " €")
+
         blackhole.blackhole('#blackhole', parsedCount, 220, 220, 125);
     }
-
-
-
-
 }
 document.getElementById("minus-commons").addEventListener('click', minComonz, false);
 export function addComonz() {
 
-    console.log("min")
     var parsedCount = parseInt($("#wallet-amount").html())
+    console.log(parsedCount)
+
     parsedCount = parsedCount + 10
     $("#wallet-amount").html(parsedCount)
-
-
+    $("#euro-amount").html("Montant versé: " + parsedCount / 10 + " €")
+    blackhole.blackhole('#blackhole', parsedCount, 220, 220, 125);
 
 }
 document.getElementById("add-commons").addEventListener('click', addComonz, false);
 export function saveWallet() {
     $("#btns-wallet").hide()
     $("#transactions-sent").hide()
-    $("#footer-sent").html("")
+    $("#footer-sent").hide()
     $("#paypal-button-container").html("")
     paypal.Buttons({
 
@@ -185,127 +184,72 @@ export function saveWallet() {
                     Attcounter: parseInt($('input[name="participants"]').val())
 
 
-                });
+                }).then(setUser.setUser(user)
+                );
                 $('#paypal-button-container').hide();
-                checkWallet()
-                chrome.storage.local.set({ 'wallet-amount': amount });
-                chrome.storage.local.set({ 'date-wallet': date });
-
+                checkWallet()       
                 console.log(" wallet storage successful")
             });
         }
 
-
     }).render('#paypal-button-container');
-
-
 
 
 }
 document.getElementById("save-wallet").addEventListener('click', saveWallet, false);
 
 export function checkWStatus() {
-    const connectedUser = firebase.auth().currentUser.uid
-    if (connectedUser) {
-        firebase.database().ref('/users/' + connectedUser).once('value').then(function (snapshot) {
-            var wallet = (snapshot.val() && snapshot.val().wallet);
-            var transactions = (snapshot.val() && snapshot.val().transactions)
-            if (wallet) {
-                var endDate = wallet.endDate;
-                var month = moment(wallet.startDate.substring(1, 11)).format('MMMM');
-                var year = moment(wallet.startDate.substring(1, 11)).format('YYYY');
+    setUser.retrieveUser().then(user => {
+        console.log(user)
+        
+        var endDate = wallet.endDate;
+        var month = moment(user.walletStartDate.substring(1, 11)).format('MMMM');
+        var year = moment(user.walletStartDate.substring(1, 11)).format('YYYY');
+        var walletAmount = user.walletAmount
+        var diff = moment().diff(user.walletendDate.substring(1, 20), 'days')
+        var transactions = user.transactions
+        var clientIds = []
+        var arrContent = Object.entries(transactions)
+        var walletRef = firebase.database().ref('/users/' + user.uid + "/wallet")
 
-                var diff = moment().diff(endDate.substring(1, 20), 'days')
-                console.log(diff)
-                if (diff > 0 && transactions && wallet.amount > 0) {
-                    var walletRef = firebase.database().ref('/users/' + connectedUser + "/wallet")
-                    var authorPool = {};
-
-                    var arrTrans = 0
-
-                    var bar = new Promise((resolve, reject) => {
-                        Object.keys(transactions).forEach((value, index, array) => {
-                            console.log(value);
-
-                            var toUpdate = firebase.database().ref('/users/' + connectedUser + "/transactions/").child(value)
-                            toUpdate.once('value').then(function (snip) {
-
-                                if (snip.val().count == 0) {
-                                    arrTrans++
-                                    console.log(arrTrans)
-                                    toUpdate.update({
-                                        count: "payé",
-
-                                    })
-
-                                }
-                                if (index === array.length - 1) resolve();
-
-                            })
-                        });
-                    });
-
-                    bar.then(() => {
-                        console.log(arrTrans)
-
-                        var numTransactions = arrTrans
-                        var share = wallet.amount / numTransactions
-                        const keys = Object.keys(transactions)
-                        for (const key of keys) {
-                            var authorKey = transactions[key].authorKey
-                            authorPool[authorKey] = (authorPool[authorKey] + share) || share
+        console.log(diff)
 
 
-                        }
-                        const authors = Object.keys(authorPool)
+        if (diff > 0 && transactions) {
+            arrContent.forEach((valeur, i) => {
+                clientIds.push(valeur[1].authorKey)
 
-                        for (const author of authors) {
-                            console.log(authorPool[author])
-                            firebase.database().ref('/checkouts/' + author + "/" + year + "/" + month).once('value').then(function (snip) {
-                                if (snip.val() && snip.val().total) {
-                                    var total = snip.val().total + authorPool[author]
-                                } else {
-                                    var total = authorPool[author]
+            })
 
-                                }
+            var filteredclientIds = clientIds.filter((x, i, a) => a.indexOf(x) == i)
+            filteredclientIds.forEach((authorKey, i) => {
+                var counts = lists.getOccurence(clientIds, authorKey)
+                var share = counts / Object.keys(transactions).length
+                firebase.database().ref('/checkouts/' + authorKey + "/" + year + "/" + month).update({
+                    [user.uid]: walletAmount / 10 * share,
 
-                                firebase.database().ref('/checkouts/' + author + "/" + year + "/" + month).update({
-                                    [connectedUser]: authorPool[author],
-                                    total: total
+                }).then(
+                    walletRef.update({
+                        status: "inactive",
+                        amount: 0
+                    }))
 
-                                }).then(
-                                    walletRef.update({
-                                        status: "inactive",
-                                        amount: 0
-                                    }))
+            })
 
-                            })
-                        }
-                        console.log(authorPool)
-                    });
-
-
-                    Object.keys(transactions).forEach(function (element) {
-                        console.log(element)
-
-                    })
-
-
-
-
-
-                }
-            }
-        })
-    }
+        }
+    })
 }
+
+
+
+
 
 const $element = $('input[type="range"]');
 const $tooltip = $('#range-tooltip');
 const sliderStates = [
-    { name: "low", tooltip: "Super, vous dégainez plus vite que votre ombre! On adore les francs-tireurs.", range: _.range(5, 300) },
-    { name: "med", tooltip: "Pas mal, vous avez raison pourquoi se presser à rétribuer un potentiel franc-maçonniste !", range: _.range(300, 500) },
-    { name: "high", tooltip: "Mouais...j'en connais un qui passe les vacances chez maman à Tel-Aviv...Allez Mr. Scrupuleux ainsi soit-il :)", range: [600] },
+    { name: "low", tooltip: "Great, a Super Faaan! We love snipers.", range: _.range(5, 300) },
+    { name: "med", tooltip: "Well, you deserve time to know what's worthy and what's not", range: _.range(300, 500) },
+    { name: "high", tooltip: "“Tolerance is the daughter of doubt.”", range: [600] },
 ];
 var currentState;
 var $handle;

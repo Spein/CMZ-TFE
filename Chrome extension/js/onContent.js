@@ -8,35 +8,32 @@ function getContent() {
     chrome.storage.local.get('key', function (retour) {
         var commonzkey = retour.key;
         chrome.storage.local.get('url', function (result) {
-
             var url = result.url;
             var currentUser = firebase.auth().currentUser.uid
             $("#comment").html("   ")
-
             const dataRef = firebase.database().ref('/users/' + currentUser + '/transactions').child(url)
-
-
             if (commonzkey !== null) {
                 var comRef = firebase.database().ref('transactions/')
-
-                firebase.database().ref('/users/' + currentUser).once('value').then(function (snip) {
+                firebase.database().ref('/users/' + currentUser)
+                .once('value')
+                .then(function (snip) {
 
                     var wallet = (snip.val() && snip.val().wallet);
-                    var walletEndate = wallet.endDate
                     var fundDate
                     var diffTime
 
-                    firebase.database().ref('/transactions/' + commonzkey + '/' + url + "/cTransactions/" + currentUser + "/date").once('value').then((data) => {
+                    firebase.database().ref('/transactions/' + commonzkey + '/' + url + "/cTransactions/" + currentUser + "/date")
+                    .once('value')
+                    .then((data) => {
                         if (data && data.val()) {
                             diffTime = new Date(walletEndate).getTime() > new Date(data.val()).getTime()
                             fundDate = moment.tz((data.val().substring(1, 25)), tz).fromNow()
                         }
 
 
-
-
-
                         if (wallet) {
+                            var walletEndate = wallet.endDate
+
                             $("#wallet-on").show()
                             $("#wallet-off").hide()
 
@@ -44,7 +41,7 @@ function getContent() {
                             dataRef.on("value", function (snop) {
 
                                 if (snop.val() !== undefined && snop.val() !== null) {
-
+                                    console.log(snop.val())
                                     var date = snop.val().onDate;
                                     var count = snop.val().count;
                                     comRef.on("value", function (snep) {
@@ -67,50 +64,51 @@ function getContent() {
                                         setInterval(function () {
 
                                             chrome.storage.local.get('progress', function (result) {
-                                                $("#statut-transaction").html("<p>Contenu rémunéré dans :<br>" + result.progress + " secondes</p>")
+                                                $("#statut-transaction").html("<p>CoMonZ dropped in :<br>" + result.progress + " seconds</p>")
 
                                             })
                                         }, 1000)
+                                    }
 
 
-                                        $("#vcomment").hide()
-                                        if (count = 0) {
-                                            if ($("#comment").html() > 3) {
-                                                $("#vcomment").show()
-                                            }
-                                        }
-                                        $("#statut-transaction").hide()
-                                        $("#content-fund").show()
-                                        $('#funding-date').html(fundDate)
-                                        console.log(fundDate)
-                                        $("#date").text(date)
+                                    $("#vcomment").hide()
+                                    if (count = 0) {
                                         if ($("#comment").html() > 3) {
                                             $("#vcomment").show()
-                                        } else {
-                                            $("#vcomment").hide()
-
-                                        }
-                                        var editables = document.getElementsByClassName("editable")
-                                        for (var i = 0; i < editables.length; i++) {
-                                            (function (index) {
-                                                editables[index].addEventListener("input", function () {
-                                                    if ($("#comment").html().length > 1) {
-
-                                                        $("#vcomment").show()
-                                                    } else {
-                                                        $("#vcomment").hide()
-                                                    }
-                                                })
-                                            })(i);
-                                        }
-                                        console.log(diffTime)
-
-                                        if (diffTime) {
-                                            $("#cancel-fund").hide()
-                                        } else {
-                                            $("#cancel-fund").show()
                                         }
                                     }
+                                    $("#statut-transaction").hide()
+                                    $("#content-fund").show()
+                                    $('#funding-date').html(fundDate)
+                                    console.log(fundDate)
+                                    $("#date").text(date)
+                                    if ($("#comment").html() > 3) {
+                                        $("#vcomment").show()
+                                    } else {
+                                        $("#vcomment").hide()
+
+                                    }
+                                    var editables = document.getElementsByClassName("editable")
+                                    for (var i = 0; i < editables.length; i++) {
+                                        (function (index) {
+                                            editables[index].addEventListener("input", function () {
+                                                if ($("#comment").html().length > 1) {
+
+                                                    $("#vcomment").show()
+                                                } else {
+                                                    $("#vcomment").hide()
+                                                }
+                                            })
+                                        })(i);
+                                    }
+                                    console.log(diffTime)
+
+                                    if (diffTime) {
+                                        $("#cancel-fund").hide()
+                                    } else {
+                                        $("#cancel-fund").show()
+                                    }
+
 
 
                                 }
@@ -140,7 +138,7 @@ function getContent() {
                                 if (snapshot.val()) {
                                     var commoners = Object.keys(snapshot.val()).length;
                                     blackhole.blackhole('#blackhole', commoners, 220, 220, 125);
-                                    $("#commoners").text("Ce contenu à déjà conquis " + commoners + " comMoners")
+                                    $("#commoners").text("This work has already charmed " + commoners + " CoMonerZ")
 
                                 } else if (snapshot.val() == undefined) {
                                     $("#statut-transaction").text("pas encore de support")
